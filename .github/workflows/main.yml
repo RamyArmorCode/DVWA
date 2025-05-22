@@ -25,3 +25,5 @@ jobs:
         run: |
           wget https://app.armorcode.com/static/scripts/slastatus.sh
           sh slastatus.sh
+- name: Cimon by Cycode
+  uses: CycodeLabs/cimon-action@v0.9.4
