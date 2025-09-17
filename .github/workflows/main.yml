@@ -21,6 +21,6 @@ jobs:
           env: 'Production'
           armorcodeHost: 'https://app.armorcode.com'
           mode: 'block'
-          armorcodeAPIToken: ${{ secrets.ARMORCODE_API_TOKEN }}
+          armorcodeAPIToken: ${{ d140c3d1-1072-4367-b97a-be803d9d146e }}
           githubToken: ${{ github.token }}
           additionalAQLFilters: ""
