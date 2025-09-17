@@ -1,29 +1,26 @@
-name: ArmorCode
-
-env:
-  armorcodehost: https://app.armorcode.com
-  product: DVWA
-  subProduct: DVWAmono
-  environment: Production
-  token: ${{secrets.ARMORCODE_TOKEN}}
-  buildTool: GITHUB_ACTIONS
-  buildNumber: ${{github.run_number}}
-  end: 30
-  
+name: ArmorCode Release Gate
 on:
-  # Triggers the workflow on push request events
   push:
-  # Allows you to run this workflow manually from the Actions tab
+  pull_request:
   workflow_dispatch:
   
 jobs:
-  build:
+  release_gate_check: # Update the job name as needed
     runs-on: ubuntu-latest
-    # ArmorCode Validation Step
-    steps:
-      - name: ArmorCode Validation
-        run: |
-          wget https://app.armorcode.com/static/scripts/slastatus.sh
-          sh slastatus.sh
-- name: Cimon by Cycode
-  uses: CycodeLabs/cimon-action@v0.9.4
+    permissions:
+      checks: write     # For writing to the checks tab
+      pull-requests: write  # For commenting on PRs
+      contents: read    # For accessing repo content
+    steps:  
+      - name: Run ArmorCode Release Gate
+        id: armorcode_gate
+        uses: docker://public.ecr.aws/armor-code/armorcode-release-gate:latest
+        with:
+          product: 'RamyDemoApp1'
+          subProduct: 'RamyRepoTest'
+          env: 'Production'
+          armorcodeHost: 'https://app.armorcode.com'
+          mode: 'block'
+          armorcodeAPIToken: ${{ secrets.ARMORCODE_API_TOKEN }}
+          githubToken: ${{ github.token }}
+          additionalAQLFilters: ""
