@@ -1,23 +1,16 @@
-name: ArmorCode Release Gate
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
-  
-jobs:
-  release_gate_check: # Update the job name as needed
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write     # For writing to the checks tab
-      pull-requests: write  # For commenting on PRs
-      contents: read    # For accessing repo content
-    steps:  
-      - name: Run ArmorCode Release Gate
-        id: armorcode_gate
-        uses: docker://public.ecr.aws/armor-code/armorcode-release-gate:latest
-        with:
-          product: 'RamyDemoApp1'
-          subProduct: 'RamyRepoTest'
+- name: ArmorCode Release Gate
+  uses: docker://public.ecr.aws/armor-code/armorcode-release-gate:latest
+  with:
+  product: 'RamyDemoApp1'
+  subProduct: 'RamyRepoTest'
+    env: prod
+    armorcodeHost: https://app.armorcode.com
+    mode: block            # or "monitor"
+    armorcodeAPIToken: ${{ secrets.ARMORCODE_API_TOKEN }}
+    githubToken: ${{ github.token }}       # or ${{ secrets.GITHUB_TOKEN }}
+    additionalAQLFilters: ""               # optional
+
+
           env: 'Production'
           armorcodeHost: 'https://app.armorcode.com'
           mode: 'block'
